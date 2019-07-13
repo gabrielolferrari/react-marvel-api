@@ -25,9 +25,14 @@ export const getCharacters = () => {
   return request.get(url);
 }
 
-export const getComics = () => {
+export const getComics = (page) => {
+  const count = 21;
+  const currentPage = page ? page : 1;
+  const currentOffset = currentPage === 1 ? 0 : (count * (page - 1));
+
   const URI = '/comics';
-  const params = `?limit=21&apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
+  const params = `?limit=${count}&offset=${currentOffset}&apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
+
   const url = `${URI}${params}`;
 
   return request.get(url);
