@@ -21,7 +21,7 @@ const getImage = url => {
   return `${url}/portrait_incredible.jpg`;
 };
 
-const CardComic = props => console.log(props) || (
+const CardComic = props => (
   <Card style={useStyles.card}>
     <CardActionArea>
       <CardMedia

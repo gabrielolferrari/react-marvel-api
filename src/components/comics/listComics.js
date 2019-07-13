@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
+import Grid from '@material-ui/core/Grid';
+
 import { getComics } from '../../services/MarvelAPI';
 import CardComic from './cardComic';
 
-const ListComics = props => {
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    marginTop: '20px',
+  },
+  paper: {
+    height: 140,
+    width: 100,
+  },
+  control: {
+    padding: 10,
+  },
+}));
 
-  const useStyles = makeStyles(theme => ({
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'space-around',
-      overflow: 'hidden',
-      backgroundColor: theme.palette.background.paper,
-    },
-    gridList: {
-      width: 500,
-      height: 450,
-    },
-    icon: {
-      color: 'rgba(255, 255, 255, 0.54)',
-    },
-  }));
+const ListComics = props => {
 
   const [comics, setComics] = useState([]);
 
@@ -41,13 +42,19 @@ const ListComics = props => {
   }, []);
 
   return (
-    <React.Fragment className={useStyles}>
-    {
-      comics.map((comic) =>
-      <CardComic key={comic.id.toString()} info={comic} />
-      )
-    }
-    </React.Fragment>
+    <Grid container className={classes.root} spacing={2}>
+      <Grid item xs={12}>
+        <Grid container justify="center" spacing={10}>
+          { comics.map((comic) =>
+            <Grid key={comic.id.toString()} item>
+              {
+                <CardComic key={comic.id.toString()} info={comic} />
+              }
+            </Grid>
+          )}
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 
