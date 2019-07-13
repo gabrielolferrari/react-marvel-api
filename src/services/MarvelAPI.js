@@ -18,7 +18,15 @@ const generateHash = () => {
 }
 
 export const getCharacters = () => {
-  const URI = '/v1/public/characters';
+  const URI = '/characters';
+  const params = `?apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
+  const url = `${URI}${params}`;
+
+  return request.get(url);
+}
+
+export const getComics = () => {
+  const URI = '/comics';
   const params = `?apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
   const url = `${URI}${params}`;
 

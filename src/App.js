@@ -2,7 +2,7 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import CharactersList from './components/characters';
+import ListComics from './components/comics/listComics';
 
 const App = () => (
   <React.Fragment>
@@ -14,7 +14,7 @@ const App = () => (
       </Toolbar>
     </AppBar>
     <main>
-      <CharactersList />
+      <ListComics />
     </main>
   </React.Fragment>
 )
