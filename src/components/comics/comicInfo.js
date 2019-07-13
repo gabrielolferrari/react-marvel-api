@@ -1,6 +1,5 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,25 +19,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 const FullScreenDialog = forwardRef((props, ref) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  useImperativeHandle(ref, () => ({
-
-    openModal() {
-      handleClickOpen();
-    }
-
-  }));
-
   function handleClickOpen() {
     setOpen(true);
   }
+
+  useImperativeHandle(ref, () => ({
+    openModal() {
+      handleClickOpen();
+    },
+  }));
 
   function handleClose() {
     setOpen(false);
@@ -61,25 +56,34 @@ const FullScreenDialog = forwardRef((props, ref) => {
           </Toolbar>
         </AppBar>
 
-        {props.comic.description ?
-          (<Typography variant="p">
-            <strong>Description</strong><br />
-            {renderHTML(props.comic.description)}
-          </Typography>) : ''
+        {props.comic.description
+          ? (
+            <Typography variant="p">
+              <strong>Description</strong>
+              <br />
+              {renderHTML(props.comic.description)}
+            </Typography>
+          ) : ''
         }
 
-        {props.comic.description ?
-          <Typography variant="p">
-            <strong>Format</strong>:
-            {props.comic.format}
-          </Typography> : ''
+        {props.comic.description
+          ? (
+            <Typography variant="p">
+              <strong>Format</strong>
+              :
+              {props.comic.format}
+            </Typography>
+          ) : ''
         }
 
-        {props.comic.pageCount > 0 ?
-          <Typography variant="p">
-              <strong>Pages</strong>:
+        {props.comic.pageCount > 0
+          ? (
+            <Typography variant="p">
+              <strong>Pages</strong>
+              :
               {props.comic.pageCount}
-          </Typography> : ''
+            </Typography>
+          ) : ''
         }
 
         <Typography variant="h6">

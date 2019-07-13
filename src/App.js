@@ -17,6 +17,6 @@ const App = () => (
       <ListComics />
     </main>
   </React.Fragment>
-)
+);
 
 export default App;

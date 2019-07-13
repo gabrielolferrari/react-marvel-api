@@ -10,32 +10,31 @@ import Typography from '@material-ui/core/Typography';
 import ComicInfo from './comicInfo';
 
 const useStyles = {
-    card: {
-      maxWidth: 324,
-    },
-    media: {
-      height: 216,
-    },
-  };
-
-const getImage = url => {
-  return `${url}/portrait_incredible.jpg`;
+  card: {
+    maxWidth: 324,
+  },
+  media: {
+    height: 216,
+  },
 };
 
+const getImage = url => `${url}/portrait_incredible.jpg`;
 
-const CardComic = props => {
+const CardComic = (props) => {
   const childRef = useRef();
 
   function cutText(text) {
-    var maxLength = 200
-    var trimmedString = text.substr(0, maxLength);
-    return trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))) + '...';
+    const maxLength = 200;
+    const trimmedString = text.substr(0, maxLength);
+    return `${trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(' ')))}...`;
   }
 
   return (
     <React.Fragment>
-      <Card style={useStyles.card}
-        onClick={() => childRef.current.openModal()}>
+      <Card
+        style={useStyles.card}
+        onClick={() => childRef.current.openModal()}
+      >
         <CardActionArea>
           <CardMedia
             style={useStyles.media}
@@ -47,7 +46,7 @@ const CardComic = props => {
               {props.info.title}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-            {props.info.description ? renderHTML(cutText(props.info.description)) : ''}
+              {props.info.description ? renderHTML(cutText(props.info.description)) : ''}
             </Typography>
           </CardContent>
         </CardActionArea>

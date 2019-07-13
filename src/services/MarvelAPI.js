@@ -1,21 +1,21 @@
 import axios from 'axios';
-import CryptoJS from 'crypto-js'
-import moment from 'moment'
-import {configAPIMarvel as config } from '../config';
+import CryptoJS from 'crypto-js';
+import moment from 'moment';
+import { configAPIMarvel as config } from '../config';
 
 const request = axios.create({
   baseURL: `${config.baseUrl}`,
-  responseType: "json"
+  responseType: 'json',
 });
 
 const timeStamp = moment().unix();
 
 const generateHash = () => {
   const hash = CryptoJS.MD5(timeStamp + config.privateKey + config.publicKey)
-    .toString(CryptoJS.enc.Hex)
+    .toString(CryptoJS.enc.Hex);
 
   return hash;
-}
+};
 
 export const getCharacters = () => {
   const URI = '/characters';
@@ -23,11 +23,11 @@ export const getCharacters = () => {
   const url = `${URI}${params}`;
 
   return request.get(url);
-}
+};
 
 export const getComics = (page) => {
   const count = 21;
-  const currentPage = page ? page : 1;
+  const currentPage = page || 1;
   const currentOffset = currentPage === 1 ? 0 : (count * (page - 1));
 
   const URI = '/comics';
@@ -36,4 +36,4 @@ export const getComics = (page) => {
   const url = `${URI}${params}`;
 
   return request.get(url);
-}
+};

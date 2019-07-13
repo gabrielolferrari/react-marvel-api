@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import { getComics } from '../../services/MarvelAPI';
 import CardComic from './cardComic';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -22,17 +22,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ListComics = props => {
-
+const ListComics = () => {
   const [comics, setComics] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [count, setCount] = useState(0);
 
   const classes = useStyles();
-
-  useEffect(() => {
-    fetchMyAPI();
-  }, []);
 
   async function fetchMyAPI(page) {
     try {
@@ -44,14 +39,18 @@ const ListComics = props => {
     }
   }
 
-  function togglePrev(e) {
-    let index = currentPage - 1;
+  useEffect(() => {
+    fetchMyAPI();
+  }, []);
+
+  function togglePrev() {
+    const index = currentPage - 1;
     setCurrentPage(index);
     fetchMyAPI(index);
   }
 
-  function toggleNext(e) {
-    let index = currentPage + 1;
+  function toggleNext() {
+    const index = currentPage + 1;
     setCurrentPage(index);
     fetchMyAPI(index);
   }
@@ -61,35 +60,38 @@ const ListComics = props => {
       <Button
         variant="contained"
         color="secondary"
-        onClick={(e) => togglePrev(e)}
-        disabled={(currentPage < 2)}>
-          previous
-        </Button>
+        onClick={() => togglePrev()}
+        disabled={(currentPage < 2)}
+      >
+        previous
+      </Button>
       <Button
         variant="contained"
         color="secondary"
         disabled={(count < 21)}
-        onClick={(e) => toggleNext(e)}>
-          Next
-        </Button>
+        onClick={() => toggleNext()}
+      >
+        Next
+      </Button>
 
       <Grid container className={classes.root} spacing={2}>
         <Grid item xs={12}>
           <Grid container justify="center" spacing={10}>
-            { comics.map((comic) =>
+            { comics.map(comic => (
               <Grid key={comic.id.toString()} item>
                 {
                   <CardComic
                     key={comic.id.toString()}
-                    info={comic} />
+                    info={comic}
+                  />
                 }
               </Grid>
-            )}
+            ))}
           </Grid>
         </Grid>
       </Grid>
     </React.Fragment>
   );
-}
+};
 
-export default ListComics
+export default ListComics;
