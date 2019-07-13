@@ -23,9 +23,14 @@ const getImage = url => {
 };
 
 
-
 const CardComic = props => {
   const childRef = useRef();
+
+  function cutText(text) {
+    var maxLength = 200
+    var trimmedString = text.substr(0, maxLength);
+    return trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))) + '...';
+  }
 
   return (
     <React.Fragment>
@@ -42,7 +47,7 @@ const CardComic = props => {
               {props.info.title}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-            {props.info.description ? renderHTML(props.info.description) : ''}
+            {props.info.description ? renderHTML(cutText(props.info.description)) : ''}
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -52,7 +57,7 @@ const CardComic = props => {
           </Button>
         </CardActions>
       </Card>
-      <ComicInfo ref={childRef} />
+      <ComicInfo ref={childRef} comic={props.info} />
     </React.Fragment>
   );
 };

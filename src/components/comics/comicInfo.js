@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
+import renderHTML from 'react-render-html';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -35,7 +36,6 @@ const FullScreenDialog = forwardRef((props, ref) => {
 
   }));
 
-
   function handleClickOpen() {
     setOpen(true);
   }
@@ -53,13 +53,42 @@ const FullScreenDialog = forwardRef((props, ref) => {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Comic Info
+              {props.comic.title}
             </Typography>
             {/* <Button color="inherit">
               Fav
             </Button> */}
           </Toolbar>
         </AppBar>
+
+        {props.comic.description ?
+          (<Typography variant="p">
+            <strong>Description</strong><br />
+            {renderHTML(props.comic.description)}
+          </Typography>) : ''
+        }
+
+        {props.comic.description ?
+          <Typography variant="p">
+            <strong>Format</strong>:
+            {props.comic.format}
+          </Typography> : ''
+        }
+
+        {props.comic.pageCount > 0 ?
+          <Typography variant="p">
+              <strong>Pages</strong>:
+              {props.comic.pageCount}
+          </Typography> : ''
+        }
+
+        <Typography variant="h6">
+          Creators
+        </Typography>
+
+        <Typography variant="h6">
+          Characters
+        </Typography>
       </Dialog>
     </div>
   );

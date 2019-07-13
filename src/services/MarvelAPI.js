@@ -27,7 +27,7 @@ export const getCharacters = () => {
 
 export const getComics = () => {
   const URI = '/comics';
-  const params = `?apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
+  const params = `?limit=21&apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
   const url = `${URI}${params}`;
 
   return request.get(url);
