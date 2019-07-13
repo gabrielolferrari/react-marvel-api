@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-
 import { getComics } from '../../services/MarvelAPI';
 import CardComic from './cardComic';
 
@@ -48,7 +47,9 @@ const ListComics = props => {
           { comics.map((comic) =>
             <Grid key={comic.id.toString()} item>
               {
-                <CardComic key={comic.id.toString()} info={comic} />
+                <CardComic
+                  key={comic.id.toString()}
+                  info={comic} />
               }
             </Grid>
           )}
