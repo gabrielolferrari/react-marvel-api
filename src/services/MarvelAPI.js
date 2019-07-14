@@ -49,3 +49,12 @@ export const getComics = async (page, character) => {
 
   return request.get(url);
 };
+
+export const getFavoriteComics = async (id) => {
+  const URI = `/comics/${id}`;
+  const params = `?apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
+
+  const url = `${URI}${params}`;
+
+  return request.get(url);
+};
