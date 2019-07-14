@@ -11,6 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import StarIcon from '@material-ui/icons/Star';
 import Slide from '@material-ui/core/Slide';
 import renderHTML from 'react-render-html';
+import ComicComments from './comicComments';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -76,7 +77,6 @@ const FullScreenDialog = forwardRef((props, ref) => {
                     >
                       <input
                         type="hidden"
-                        className="form-control"
                         name="comicid"
                         ref={(node) => {
                           comicid = node;
@@ -132,6 +132,8 @@ const FullScreenDialog = forwardRef((props, ref) => {
         <Typography variant="h6">
           Characters
         </Typography>
+
+        <ComicComments commicid={props.comic.id} />
       </Dialog>
     </div>
   );

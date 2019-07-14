@@ -15,8 +15,13 @@ const app = Express();
 
 Mongoose.connect('mongodb://localhost/marvelapi', { useNewUrlParser: true });
 
-const FavoriteModel = Mongoose.model('favorite', {
+const FavoriteModel = Mongoose.model('favorites', {
   comicid: String,
+});
+
+const CommentModel = Mongoose.model('comments', {
+  comicid: String,
+  comment: String,
 });
 
 const FavoriteType = new GraphQLObjectType({
@@ -24,6 +29,15 @@ const FavoriteType = new GraphQLObjectType({
   fields: {
     id: { type: GraphQLID },
     comicid: { type: GraphQLString },
+  },
+});
+
+const CommentType = new GraphQLObjectType({
+  name: 'Comment',
+  fields: {
+    id: { type: GraphQLID },
+    comicid: { type: GraphQLString },
+    comment: { type: GraphQLString },
   },
 });
 
@@ -42,6 +56,13 @@ const schema = new GraphQLSchema({
         },
         resolve: (root, args) => FavoriteModel.findById(args.id).exec(),
       },
+      comments: {
+        type: GraphQLList(CommentType),
+        args: {
+          comicid: { type: GraphQLNonNull(GraphQLString) },
+        },
+        resolve: (root, args) => CommentModel.find({ comicid: args.comicid }).exec(),
+      },
     },
   }),
   mutation: new GraphQLObjectType({
@@ -55,6 +76,17 @@ const schema = new GraphQLSchema({
         resolve: (root, args) => {
           const favorite = new FavoriteModel(args);
           return favorite.save();
+        },
+      },
+      addComment: {
+        type: CommentType,
+        args: {
+          comicid: { type: GraphQLNonNull(GraphQLString) },
+          comment: { type: GraphQLNonNull(GraphQLString) },
+        },
+        resolve: (root, args) => {
+          const comment = new CommentModel(args);
+          return comment.save();
         },
       },
     },

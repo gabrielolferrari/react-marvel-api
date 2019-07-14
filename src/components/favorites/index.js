@@ -58,7 +58,7 @@ const ListFavorites = (props) => {
 
   useEffect(() => {
     fetchMyAPI();
-  }, []);
+  });
 
   return (
     <React.Fragment>
