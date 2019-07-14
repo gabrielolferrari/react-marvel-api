@@ -17,21 +17,33 @@ const generateHash = () => {
   return hash;
 };
 
-export const getCharacters = () => {
+export const getCharacters = async (character) => {
   const URI = '/characters';
-  const params = `?apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
+  let params = `?apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
+
+  if (character) {
+    params = params.concat(`&name=${character}`);
+  }
+
   const url = `${URI}${params}`;
 
   return request.get(url);
 };
 
-export const getComics = (page) => {
+export const getComics = async (page, character) => {
   const count = 21;
   const currentPage = page || 1;
   const currentOffset = currentPage === 1 ? 0 : (count * (page - 1));
 
   const URI = '/comics';
-  const params = `?limit=${count}&offset=${currentOffset}&apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
+  let params = `?limit=${count}&offset=${currentOffset}&apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
+
+  if (character) {
+    await getCharacters(character).then((result) => {
+      const idChar = result.data.data.results[0].id;
+      params = params.concat(`&characters=${idChar}`);
+    });
+  }
 
   const url = `${URI}${params}`;
 
