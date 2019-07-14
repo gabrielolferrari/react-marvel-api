@@ -49,7 +49,12 @@ const useStyles = makeStyles(({
   },
   pagination: {
     width: '50%',
+    margin: '0 auto',
     marginTop: 20,
+    marginBottom: 20,
+  },
+  nextBtn: {
+    float: 'right',
   },
 }));
 
@@ -108,7 +113,7 @@ const ListComics = () => {
           </IconButton>
         </Paper>
 
-        <Grid container className={classes.root} spacing={2}>
+        <Grid container className={classes.root}>
           <Grid item xs={12}>
             <Grid container justify="center" spacing={10}>
               { comics.map(comic => (
@@ -139,6 +144,7 @@ const ListComics = () => {
             color="primary"
             disabled={(count < 21)}
             onClick={() => toggleNext()}
+            className={classes.nextBtn}
           >
             Next
           </Button>
