@@ -47,13 +47,17 @@ const useStyles = makeStyles(({
     height: 28,
     margin: 4,
   },
+  pagination: {
+    width: '50%',
+    marginTop: 20,
+  },
 }));
 
 const ListComics = () => {
   const [comics, setComics] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [count, setCount] = useState(0);
-  const [charSearch, setICharSearch] = useState();
+  const [charSearch, setICharSearch] = useState('');
 
   const classes = useStyles();
 
@@ -121,22 +125,24 @@ const ListComics = () => {
           </Grid>
         </Grid>
 
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => togglePrev()}
-          disabled={(currentPage < 2)}
-        >
-          previous
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          disabled={(count < 21)}
-          onClick={() => toggleNext()}
-        >
-          Next
-        </Button>
+        <div className={classes.pagination}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => togglePrev()}
+            disabled={(currentPage < 2)}
+          >
+            previous
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={(count < 21)}
+            onClick={() => toggleNext()}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </React.Fragment>
   );
