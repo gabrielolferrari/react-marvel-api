@@ -38,7 +38,7 @@ const ListFavorites = (props) => {
 
   async function fetchMyAPI() {
     const fetchData = async () => {
-      const data = await props.client.query({ query: GET_FAVORITES });
+      const data = await props.client.query({ query: GET_FAVORITES, fetchPolicy: 'network-only' });
       try {
         const listId = data.data.favorites.map(comic => comic.comicid);
 
