@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import gql from 'graphql-tag';
 import { withApollo } from 'react-apollo';
-// import { Query } from 'react-apollo';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { getFavoriteComics } from '../../services/MarvelAPI';

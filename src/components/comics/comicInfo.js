@@ -24,11 +24,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ADD_FAVORITE = gql`
-    mutation favorite($comicid: String!) {
+    mutation favorite($comicid: String!, $title: String!) {
       addFavorite(
         comicid: $comicid,
+        title: $title,
       ) {
-        comicid
+        comicid,
+        title
       }
     }
 `;
@@ -37,7 +39,7 @@ const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={r
 
 const FullScreenDialog = forwardRef((props, ref) => {
   const classes = useStyles();
-  let comicid;
+  let comicid; let title;
   const [open, setOpen] = React.useState(false);
 
   function handleClickOpen() {
@@ -71,8 +73,9 @@ const FullScreenDialog = forwardRef((props, ref) => {
                   <React.Fragment>
                     <form onSubmit={(e) => {
                       e.preventDefault();
-                      addFavorite({ variables: { comicid: comicid.value } });
+                      addFavorite({ variables: { comicid: comicid.value, title: title.value } });
                       comicid.value = '';
+                      title.value = '';
                     }}
                     >
                       <input
@@ -81,8 +84,15 @@ const FullScreenDialog = forwardRef((props, ref) => {
                         ref={(node) => {
                           comicid = node;
                         }}
-                        placeholder="ComicID"
                         value={props.comic.id}
+                      />
+                      <input
+                        type="hidden"
+                        name="title"
+                        ref={(node) => {
+                          title = node;
+                        }}
+                        value={props.comic.title}
                       />
                       <IconButton type="submit" color="inherit"><StarIcon /></IconButton>
                     </form>

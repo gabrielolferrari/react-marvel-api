@@ -17,6 +17,7 @@ Mongoose.connect('mongodb://localhost/marvelapi', { useNewUrlParser: true });
 
 const FavoriteModel = Mongoose.model('favorites', {
   comicid: String,
+  title: String,
 });
 
 const CommentModel = Mongoose.model('comments', {
@@ -29,6 +30,7 @@ const FavoriteType = new GraphQLObjectType({
   fields: {
     id: { type: GraphQLID },
     comicid: { type: GraphQLString },
+    title: { type: GraphQLString },
   },
 });
 
@@ -72,6 +74,7 @@ const schema = new GraphQLSchema({
         type: FavoriteType,
         args: {
           comicid: { type: GraphQLNonNull(GraphQLString) },
+          title: { type: GraphQLNonNull(GraphQLString) },
         },
         resolve: (root, args) => {
           const favorite = new FavoriteModel(args);
