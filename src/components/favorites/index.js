@@ -34,6 +34,8 @@ const ListFavorites = (props) => {
 
   const classes = useStyles();
 
+  let arrayComics = [];
+
   async function fetchMyAPI() {
     const fetchData = async () => {
       const data = await props.client.query({ query: GET_FAVORITES });
@@ -43,7 +45,7 @@ const ListFavorites = (props) => {
         const promises = listId.map(id => getFavoriteComics(id));
         const registrations = await Promise.all(promises).then(result => result);
 
-        const arrayComics = registrations.map((comic) => {
+        arrayComics = registrations.map((comic) => {
           const info = comic.data.data.results;
           return info[0];
         });
@@ -58,7 +60,7 @@ const ListFavorites = (props) => {
 
   useEffect(() => {
     fetchMyAPI();
-  });
+  }, []);
 
   return (
     <React.Fragment>
@@ -67,12 +69,13 @@ const ListFavorites = (props) => {
           <Grid item xs={12}>
             <Grid container justify="center" spacing={10}>
               { comics.map(comic => (
-                <Grid key={comic.id.toString()} item>
-                  {
+                <Grid key={comic.id ? comic.id.toString() : ''} item>
+                  { comic.id ? (
                     <CardComic
                       key={comic.id.toString()}
                       info={comic}
                     />
+                  ) : ''
                   }
                 </Grid>
               ))}
