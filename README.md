@@ -1,8 +1,10 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## WEB APP
 
-## Available Scripts
+In the root project directory, you can run:
 
-In the project directory, you can run:
+### `npm install`
+
+Install all project dependencies.
 
 ### `npm start`
 
@@ -11,11 +13,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
@@ -37,32 +34,34 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## NodeJS - GraphQL API
+In the backend folder on the project directory, you can run:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### `npm install`
 
-### Code Splitting
+Install all project dependencies.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+### `node app.js`
 
-### Analyzing the Bundle Size
+Start node server on port 3001.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+### MongoDB
 
-### Making a Progressive Web App
+Our data are stored in mongodb. For install:
+[Install MongoDB](https://docs.mongodb.com/manual/installation/)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+## React Native APP
+In the mobile folder on the project directory, you can run:
 
-### Advanced Configuration
+### `npm install`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+Install all project dependencies.
 
-### Deployment
+### `npm install -g expo-cli`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+[Learn more about Expo](https://docs.expo.io/versions/v33.0.0/)
 
-### `npm run build` fails to minify
+### `npm run web`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Runs the app in the development mode to view it in the browser.
