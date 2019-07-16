@@ -71,8 +71,16 @@ const ListComics = () => {
   async function fetchMyAPI(page, character) {
     try {
       const result = await getComics(page, character);
-      setComics(result.data.data.results);
-      setCount(result.data.data.count);
+
+      if (result) {
+        const dataList = result.data.data;
+        setComics(dataList.results);
+        setCount(result.data.data.count);
+      } else {
+        setComics([]);
+        setCount(0);
+      }
+
       setLoading(false);
     } catch (e) {
       console.log(`Request failed: ${e}`);
@@ -84,16 +92,19 @@ const ListComics = () => {
   }, []);
 
   function filter() {
+    setLoading(true);
     fetchMyAPI(currentPage, charSearch);
   }
 
   function togglePrev() {
+    setLoading(true);
     const index = currentPage - 1;
     setCurrentPage(index);
     fetchMyAPI(index, charSearch);
   }
 
   function toggleNext() {
+    setLoading(true);
     const index = currentPage + 1;
     setCurrentPage(index);
     fetchMyAPI(index, charSearch);
@@ -126,16 +137,25 @@ const ListComics = () => {
                 <Grid container className={classes.root}>
                   <Grid item xs={12}>
                     <Grid container justify="center" spacing={10}>
-                      { comics.map(comic => (
-                        <Grid key={comic.id.toString()} item>
-                          {
-                            <CardComic
-                              key={comic.id.toString()}
-                              info={comic}
-                            />
-                          }
-                        </Grid>
-                      ))}
+                      { comics.length > 0
+                        ? (
+                          comics.map(comic => (
+                            <Grid key={comic.id.toString()} item>
+                              {
+                                <CardComic
+                                  key={comic.id.toString()}
+                                  info={comic}
+                                />
+                              }
+                            </Grid>
+                          ))
+                        )
+                        : (
+                          <Grid item>
+                            No comics found. Try filter using the full name. e.g., Spider-Man
+                          </Grid>
+                        )
+                    }
                     </Grid>
                   </Grid>
                 </Grid>

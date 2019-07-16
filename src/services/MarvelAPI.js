@@ -39,10 +39,17 @@ export const getComics = async (page, character) => {
   let params = `?limit=${count}&offset=${currentOffset}&apikey=${config.publicKey}&ts=${timeStamp}&hash=${generateHash()}`;
 
   if (character) {
+    let charInfo = [];
+
     await getCharacters(character).then((result) => {
-      const idChar = result.data.data.results[0].id;
-      params = params.concat(`&characters=${idChar}`);
+      charInfo = result.data.data.results;
     });
+
+    if (charInfo[0]) {
+      params = params.concat(`&characters=${charInfo[0].id}`);
+    } else {
+      return null;
+    }
   }
 
   const url = `${URI}${params}`;
