@@ -44,7 +44,7 @@ const useStyles = makeStyles(({
 const ComicComments = (props) => {
   const classes = useStyles();
 
-  let comicid = props.commicid.toString();
+  const comicid = props.commicid.toString();
   let comment;
 
   const GET_COMMENTS = gql`

@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,9 +10,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import StarIcon from '@material-ui/icons/Star';
-import Slide from '@material-ui/core/Slide';
 import renderHTML from 'react-render-html';
 import ComicComments from './comicComments';
+import AlertDialog from '../dialog';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -48,10 +48,10 @@ const ADD_FAVORITE = gql`
     }
 `;
 
-const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
-
 const FullScreenDialog = forwardRef((props, ref) => {
   const classes = useStyles();
+  const childRef = useRef();
+
   let comicid; let title;
   const [open, setOpen] = React.useState(false);
 
@@ -81,8 +81,8 @@ const FullScreenDialog = forwardRef((props, ref) => {
               {props.comic.title}
             </Typography>
             {
-              <Mutation mutation={ADD_FAVORITE} onCompleted={() => console.log('Complete')}>
-                {(addFavorite, { loading, error }) => (
+              <Mutation mutation={ADD_FAVORITE} onCompleted={() => childRef.current.openModal()}>
+                {addFavorite => (
                   <React.Fragment>
                     <form onSubmit={(e) => {
                       e.preventDefault();
@@ -118,15 +118,13 @@ const FullScreenDialog = forwardRef((props, ref) => {
                         )
                       }
                     </form>
-                    {loading && <p>Loading...</p>}
-                    {error && <p>Error :( Please try again</p>}
                   </React.Fragment>
                 )}
               </Mutation>
             }
           </Toolbar>
         </AppBar>
-
+        <AlertDialog ref={childRef} message="Your comic was saved." />
         <Grid container className={classes.root}>
           <Grid item xs={12}>
             {props.comic.description
