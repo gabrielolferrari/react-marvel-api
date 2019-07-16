@@ -64,7 +64,7 @@ const ListComics = () => {
   const [comics, setComics] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [count, setCount] = useState(0);
-  const [charSearch, setICharSearch] = useState('');
+  const [charSearch, setCharSearch] = useState('');
   const [loading, setLoading] = useState(true);
 
   const classes = useStyles();
@@ -99,6 +99,7 @@ const ListComics = () => {
 
   function clear() {
     setLoading(true);
+    setCharSearch('');
     fetchMyAPI();
   }
 
@@ -129,7 +130,7 @@ const ListComics = () => {
             placeholder="Look for comic by character"
             inputProps={{ 'aria-label': 'Search Google Maps' }}
             value={charSearch}
-            onInput={e => setICharSearch(e.target.value)}
+            onInput={e => setCharSearch(e.target.value)}
           />
           <Divider className={classes.divider} />
           <IconButton className={classes.iconButton} aria-label="Search" onClick={() => filter()}>
