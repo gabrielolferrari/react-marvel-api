@@ -9,33 +9,55 @@ import {
   View,
   FlatList,
   Linking,
+  Image,
 } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
   h2text: {
-    marginTop: 10,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Verdana',
     fontSize: 36,
     fontWeight: 'bold',
+    color: '#ed1d24',
   },
   flatview: {
+    flexDirection: 'row',
     justifyContent: 'center',
     paddingTop: 30,
+    paddingRight: 15,
+    paddingLeft: 15,
     borderRadius: 2,
+  },
+  imageArea: {
+    flex: 1,
+    width: '15%',
+  },
+  image: {
+    width: 100,
+    height: 140,
+  },
+  infoArea: {
+    flex: 1,
+    width: '85%',
+    justifyContent: 'center',
   },
   name: {
     fontFamily: 'Verdana',
-    fontSize: 18,
+    fontSize: 16,
+    textAlign: 'right',
+    color: '#FFF',
   },
-  email: {
-    color: 'red',
+  buy: {
+    marginTop: 10,
+    textAlign: 'right',
+    fontSize: 11,
+    color: '#ed1d24',
+    fontWeight: 'bold',
   },
 });
 
@@ -49,6 +71,7 @@ const GET_FAVORITES = gql`
         id,
         comicid,
         title,
+        image,
       }
     }
 `;
@@ -86,8 +109,16 @@ class Favorites extends Component {
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => this.handleClick(item.title)}>
                 <View style={styles.flatview} key={item.id}>
-                  <Text style={styles.name}>{item.title}</Text>
-                  <Text style={styles.email}>Comprar</Text>
+                  <View style={styles.imageArea}>
+                    <Image
+                      source={`${item.image}/portrait_xlarge.jpg`}
+                      style={styles.image}
+                    />
+                  </View>
+                  <View style={styles.infoArea}>
+                    <Text style={styles.name}>{item.title}</Text>
+                    <Text style={styles.buy}>Comprar</Text>
+                  </View>
                 </View>
               </TouchableOpacity>
             )}

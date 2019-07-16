@@ -14,25 +14,20 @@ const defaultOptions = {
     errorPolicy: 'all',
   },
   mutate: {
-    errorPolicy: 'all'
-  }
-}
+    errorPolicy: 'all',
+  },
+};
 
 const client = new ApolloClient({
   uri: 'http://localhost:3001/graphql',
   cache: false,
   defaultOptions,
-})
-
-// const client = new ApolloClient({
-//   uri: 'http://localhost:3001/graphql',
-//   cache: false,
-// });
+});
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#373737',
     alignItems: 'center',
     justifyContent: 'center',
   },

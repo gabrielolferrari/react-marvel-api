@@ -37,13 +37,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ADD_FAVORITE = gql`
-    mutation favorite($comicid: String!, $title: String!) {
+    mutation favorite($comicid: String!, $title: String!, $image: String!) {
       addFavorite(
         comicid: $comicid,
         title: $title,
+        image: $image
       ) {
         comicid,
-        title
+        title,
+        image
       }
     }
 `;
@@ -52,7 +54,7 @@ const FullScreenDialog = forwardRef((props, ref) => {
   const classes = useStyles();
   const childRef = useRef();
 
-  let comicid; let title;
+  let comicid; let title; let image;
   const [open, setOpen] = React.useState(false);
 
   function handleClickOpen() {
@@ -86,9 +88,16 @@ const FullScreenDialog = forwardRef((props, ref) => {
                   <React.Fragment>
                     <form onSubmit={(e) => {
                       e.preventDefault();
-                      addFavorite({ variables: { comicid: comicid.value, title: title.value } });
+                      addFavorite({
+                        variables: {
+                          comicid: comicid.value,
+                          title: title.value,
+                          image: image.value,
+                        },
+                      });
                       comicid.value = '';
                       title.value = '';
+                      image.value = '';
                     }}
                     >
                       <input
@@ -106,6 +115,14 @@ const FullScreenDialog = forwardRef((props, ref) => {
                           title = node;
                         }}
                         value={props.comic.title}
+                      />
+                      <input
+                        type="hidden"
+                        name="image"
+                        ref={(node) => {
+                          image = node;
+                        }}
+                        value={props.comic.thumbnail.path}
                       />
                       {props.isFavorite === false
                         || (
