@@ -7,6 +7,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import ClearRounded from '@material-ui/icons/ClearRounded';
 import { getComics } from '../../services/MarvelAPI';
 import CardComic from './cardComic';
 import Loading from '../loading';
@@ -96,6 +97,11 @@ const ListComics = () => {
     fetchMyAPI(currentPage, charSearch);
   }
 
+  function clear() {
+    setLoading(true);
+    fetchMyAPI();
+  }
+
   function togglePrev() {
     setLoading(true);
     const index = currentPage - 1;
@@ -114,6 +120,10 @@ const ListComics = () => {
     <React.Fragment>
       <div className={classes.fragment}>
         <Paper className={classes.rootSearch}>
+          <IconButton className={classes.iconButton} aria-label="Search" onClick={() => clear()}>
+            <ClearRounded />
+          </IconButton>
+          <Divider className={classes.divider} />
           <InputBase
             className={classes.input}
             placeholder="Look for comic by character"
