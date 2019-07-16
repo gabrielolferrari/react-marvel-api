@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider, withApollo } from 'react-apollo';
+import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
+
 import {
   StyleSheet,
   Text,
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 25,
+    marginBottom: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -55,14 +56,10 @@ const styles = StyleSheet.create({
   buy: {
     marginTop: 10,
     textAlign: 'right',
-    fontSize: 11,
+    fontSize: 14,
     color: '#ed1d24',
     fontWeight: 'bold',
   },
-});
-
-const client = new ApolloClient({
-  uri: 'http://localhost:3001/graphql',
 });
 
 const GET_FAVORITES = gql`
@@ -82,8 +79,14 @@ class Favorites extends Component {
   }
 
   async componentDidMount() {
-    const favoriteQuery = this.props.client.query({ query: GET_FAVORITES, fetchPolicy: 'network-only' });
-    favoriteQuery.then(((resolve) => { this.setState({ favorites: resolve.data.favorites }); }));
+    const observableQuery = this.props.client.watchQuery({
+      query: GET_FAVORITES,
+      pollInterval: 1000,
+    });
+
+    observableQuery.subscribe({
+      next: ({ data }) => this.setState({ favorites: data.favorites }),
+    });
   }
 
   handleClick = (title) => {
@@ -98,33 +101,31 @@ class Favorites extends Component {
 
   render() {
     return (
-      <ApolloProvider client={client}>
-        <View style={styles.container}>
-          <Text style={styles.h2text}>
-            My Favorites
-          </Text>
-          <FlatList
-            data={this.state.favorites}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => this.handleClick(item.title)}>
-                <View style={styles.flatview} key={item.id}>
-                  <View style={styles.imageArea}>
-                    <Image
-                      source={`${item.image}/portrait_xlarge.jpg`}
-                      style={styles.image}
-                    />
-                  </View>
-                  <View style={styles.infoArea}>
-                    <Text style={styles.name}>{item.title}</Text>
-                    <Text style={styles.buy}>Comprar</Text>
-                  </View>
+      <View style={styles.container}>
+        <Text style={styles.h2text}>
+          My Favorites
+        </Text>
+        <FlatList
+          data={this.state.favorites}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => this.handleClick(item.title)}>
+              <View style={styles.flatview} key={item.id}>
+                <View style={styles.imageArea}>
+                  <Image
+                    source={`${item.image}/portrait_xlarge.jpg`}
+                    style={styles.image}
+                  />
                 </View>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      </ApolloProvider>
+                <View style={styles.infoArea}>
+                  <Text style={styles.name}>{item.title}</Text>
+                  <Text style={styles.buy}>Comprar</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     );
   }
 }
