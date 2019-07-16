@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
-
 import {
   StyleSheet,
   Text,
@@ -13,6 +12,14 @@ import {
 } from 'react-native';
 
 const styles = StyleSheet.create({
+  header: {
+    width: '100%',
+    backgroundColor: '#ed1d24',
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    boxShadow: '0px 2px 4px -1px rgba(255,255,255,0.2), 0px 4px 5px 0px rgba(255,255,255,0.14), 0px 1px 10px 0px rgba(255,255,255,0.12)',
+  },
   container: {
     flex: 1,
     marginTop: 25,
@@ -22,9 +29,10 @@ const styles = StyleSheet.create({
   },
   h2text: {
     fontFamily: 'Verdana',
-    fontSize: 36,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#ed1d24',
+    color: '#FFF',
+    textAlign: 'center',
   },
   flatview: {
     flexDirection: 'row',
@@ -101,31 +109,35 @@ class Favorites extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.h2text}>
-          My Favorites
-        </Text>
-        <FlatList
-          data={this.state.favorites}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => this.handleClick(item.title)}>
-              <View style={styles.flatview} key={item.id}>
-                <View style={styles.imageArea}>
-                  <Image
-                    source={`${item.image}/portrait_xlarge.jpg`}
-                    style={styles.image}
-                  />
+      <React.Fragment>
+        <View style={styles.header}>
+          <Text style={styles.h2text}>
+            My Favorites
+          </Text>
+        </View>
+        <View style={styles.container}>
+          <FlatList
+            data={this.state.favorites}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => this.handleClick(item.title)}>
+                <View style={styles.flatview} key={item.id}>
+                  <View style={styles.imageArea}>
+                    <Image
+                      source={`${item.image}/portrait_xlarge.jpg`}
+                      style={styles.image}
+                    />
+                  </View>
+                  <View style={styles.infoArea}>
+                    <Text style={styles.name}>{item.title}</Text>
+                    <Text style={styles.buy}>Comprar</Text>
+                  </View>
                 </View>
-                <View style={styles.infoArea}>
-                  <Text style={styles.name}>{item.title}</Text>
-                  <Text style={styles.buy}>Comprar</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-      </View>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      </React.Fragment>
     );
   }
 }
