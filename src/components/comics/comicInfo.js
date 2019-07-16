@@ -2,6 +2,7 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,6 +21,18 @@ const useStyles = makeStyles(theme => ({
   title: {
     marginLeft: theme.spacing(2),
     flex: 1,
+  },
+  root: {
+    marginTop: 40,
+    width: '80%',
+    margin: '0 auto',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+  },
+  info: {
+    marginTop: '20px',
   },
 }));
 
@@ -58,7 +71,7 @@ const FullScreenDialog = forwardRef((props, ref) => {
 
   return (
     <div>
-      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+      <Dialog fullScreen open={open} onClose={handleClose} scroll="body">
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="Close">
@@ -94,7 +107,16 @@ const FullScreenDialog = forwardRef((props, ref) => {
                         }}
                         value={props.comic.title}
                       />
-                      <IconButton type="submit" color="inherit"><StarIcon /></IconButton>
+                      {props.isFavorite === false
+                        || (
+                          <IconButton type="submit" color="inherit">
+                            <StarIcon />
+                            <Typography variant="body1">
+                              &nbsp; Add to favorites
+                            </Typography>
+                          </IconButton>
+                        )
+                      }
                     </form>
                     {loading && <p>Loading...</p>}
                     {error && <p>Error :( Please try again</p>}
@@ -105,45 +127,41 @@ const FullScreenDialog = forwardRef((props, ref) => {
           </Toolbar>
         </AppBar>
 
-        {props.comic.description
-          ? (
-            <Typography variant="body1">
-              <strong>Description</strong>
-              <br />
-              {renderHTML(props.comic.description)}
-            </Typography>
-          ) : ''
-        }
+        <Grid container className={classes.root}>
+          <Grid item xs={12}>
+            {props.comic.description
+              ? (
+                <Typography variant="body1">
+                  <strong>Description</strong>
+                  <br />
+                  {renderHTML(props.comic.description)}
+                </Typography>
+              ) : ''
+            }
 
-        {props.comic.description
-          ? (
-            <Typography variant="body1">
-              <strong>Format</strong>
-              :
-              {props.comic.format}
-            </Typography>
-          ) : ''
-        }
+            {props.comic.description
+              ? (
+                <Typography variant="body1" className={classes.info}>
+                  <strong>Format</strong>
+                  <br />
+                  {props.comic.format}
+                </Typography>
+              ) : ''
+            }
 
-        {props.comic.pageCount > 0
-          ? (
-            <Typography variant="body1">
-              <strong>Pages</strong>
-              :
-              {props.comic.pageCount}
-            </Typography>
-          ) : ''
-        }
+            {props.comic.pageCount > 0
+              ? (
+                <Typography variant="body1" className={classes.info}>
+                  <strong>Pages</strong>
+                  <br />
+                  {props.comic.pageCount}
+                </Typography>
+              ) : ''
+            }
 
-        <Typography variant="h6">
-          Creators
-        </Typography>
-
-        <Typography variant="h6">
-          Characters
-        </Typography>
-
-        <ComicComments commicid={props.comic.id} />
+            <ComicComments commicid={props.comic.id} />
+          </Grid>
+        </Grid>
       </Dialog>
     </div>
   );

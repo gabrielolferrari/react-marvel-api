@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { getFavoriteComics } from '../../services/MarvelAPI';
 import CardComic from '../comics/cardComic';
+import Loading from '../loading';
 
 const useStyles = makeStyles(({
   fragment: {
@@ -30,6 +31,7 @@ const GET_FAVORITES = gql`
 
 const ListFavorites = (props) => {
   const [comics, setComics] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const classes = useStyles();
 
@@ -50,6 +52,7 @@ const ListFavorites = (props) => {
         });
 
         setComics(arrayComics);
+        setLoading(false);
       } catch (e) {
         console.log(`Request failed: ${e}`);
       }
@@ -66,19 +69,27 @@ const ListFavorites = (props) => {
       <div className={classes.fragment}>
         <Grid container className={classes.root}>
           <Grid item xs={12}>
-            <Grid container justify="center" spacing={10}>
-              { comics.map(comic => (
-                <Grid key={comic.id ? comic.id.toString() : ''} item>
-                  { comic.id ? (
-                    <CardComic
-                      key={comic.id.toString()}
-                      info={comic}
-                    />
-                  ) : ''
-                  }
-                </Grid>
-              ))}
-            </Grid>
+            {
+          loading
+            ? (
+              <Loading />
+            )
+            : (
+              <Grid container justify="center" spacing={10}>
+                { comics.map(comic => (
+                  <Grid key={comic.id ? comic.id.toString() : ''} item>
+                    { comic.id ? (
+                      <CardComic
+                        key={comic.id.toString()}
+                        info={comic}
+                      />
+                    ) : ''
+                    }
+                  </Grid>
+                ))}
+              </Grid>
+            )
+          }
           </Grid>
         </Grid>
       </div>

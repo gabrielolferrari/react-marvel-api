@@ -9,9 +9,9 @@ import Favorites from './components/favorites';
 
 const App = () => (
   <React.Fragment>
-    <AppBar position="relative">
+    <AppBar position="relative" color="primary">
       <Toolbar>
-        <Typography variant="h6" color="inherit" noWrap>
+        <Typography variant="h6" color="inherit" style={{ flex: 1 }} noWrap>
           MARVEL
         </Typography>
         <Menu />

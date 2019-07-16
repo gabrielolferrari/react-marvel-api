@@ -1,6 +1,10 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
+import Typography from '@material-ui/core/Typography';
+import SendIcon from '@material-ui/icons/Send';
+import Button from '@material-ui/core/Button';
 
 const ADD_COMMENT = gql`
   mutation comment($comicid: String!, $comment: String!) {
@@ -11,7 +15,35 @@ const ADD_COMMENT = gql`
   }
 `;
 
+const useStyles = makeStyles(({
+  commentTitle: {
+    borderTop: '1px solid #ddd',
+    marginTop: 20,
+    marginBottom: 20,
+    paddingTop: 20,
+  },
+  comment: {
+    borderTop: '1px solid #ddd',
+    marginTop: 20,
+    marginBottom: 20,
+    paddingTop: 20,
+    width: '100%',
+    height: 100,
+    border: 0,
+    borderBottom: '1px solid #888',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontSize: '12pt',
+  },
+  buttonSend: {
+    float: 'right',
+    marginTop: 10,
+    marginBottom: 40,
+  },
+}));
+
 const ComicComments = (props) => {
+  const classes = useStyles();
+
   let comicid = props.commicid.toString();
   let comment;
 
@@ -26,42 +58,11 @@ const ComicComments = (props) => {
 
   return (
     <React.Fragment>
-      <Mutation mutation={ADD_COMMENT} onCompleted={() => console.log('Complete')}>
-        {(addFavorite, { loading, error }) => (
-          <React.Fragment>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              addFavorite({ variables: { comicid: comicid.value, comment: comment.value } });
-              comicid.value = '';
-              comment.value = '';
-            }}
-            >
-              <input
-                type="hidden"
-                name="comicid"
-                ref={(node) => {
-                  comicid = node;
-                }}
-                placeholder="ComicID"
-                value={comicid}
-              />
+      <Typography variant="h6" className={classes.commentTitle}>
+        <strong>Comments</strong>
+      </Typography>
 
-              <input
-                type="text"
-                ref={(node) => {
-                  comment = node;
-                }}
-                placeholder="Comment"
-              />
-
-              <button type="submit" color="inherit">Submit</button>
-            </form>
-            {loading && <p>Loading...</p>}
-            {error && <p>Error :( Please try again</p>}
-          </React.Fragment>
-        )}
-      </Mutation>
-      <Query pollInterval={500} query={GET_COMMENTS} variables={{ comicid }}>
+      <Query pollInterval={1000} query={GET_COMMENTS} variables={{ comicid }} fetchPolicy="network-only">
         {({ loading, error, data }) => {
           if (loading) return 'Loading...';
           if (error) return `Error! ${error.message}`;
@@ -76,6 +77,34 @@ const ComicComments = (props) => {
           );
         }}
       </Query>
+
+      <Mutation mutation={ADD_COMMENT} onCompleted={() => console.log('Complete')} fetchPolicy="no-cache">
+        {(addFavorite, { loading, error }) => (
+          <React.Fragment>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              addFavorite({ variables: { comicid, comment: comment.value } });
+              comment.value = '';
+            }}
+            >
+              <textarea
+                className={classes.comment}
+                ref={(node) => {
+                  comment = node;
+                }}
+                placeholder="Comment"
+              />
+              <Button type="submit" variant="contained" color="primary" className={classes.buttonSend}>
+                Send &nbsp;
+                <SendIcon />
+              </Button>
+            </form>
+            {loading && <p>Loading...</p>}
+            {error && <p>Error :( Please try again</p>}
+          </React.Fragment>
+        )}
+      </Mutation>
+
     </React.Fragment>
   );
 };

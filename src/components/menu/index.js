@@ -9,6 +9,7 @@ const useStyles = makeStyles(theme => ({
     float: 'right',
   },
   link: {
+    color: '#FFFFFF',
     margin: theme.spacing(1),
   },
 }));
@@ -19,11 +20,11 @@ const Menu = () => {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Typography>
-          <Link to="/" color="inherit" className={classes.link}>
+        <Typography variant="h6">
+          <Link to="/" color="secondary" className={classes.link}>
             Comics
           </Link>
-          <Link to="/Favorites" color="inherit" className={classes.link}>
+          <Link to="/Favorites" color="primary" className={classes.link}>
             Favorites
           </Link>
         </Typography>

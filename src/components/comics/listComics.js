@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { getComics } from '../../services/MarvelAPI';
 import CardComic from './cardComic';
+import Loading from '../loading';
 
 const useStyles = makeStyles(({
   fragment: {
@@ -63,6 +64,7 @@ const ListComics = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [count, setCount] = useState(0);
   const [charSearch, setICharSearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const classes = useStyles();
 
@@ -71,6 +73,7 @@ const ListComics = () => {
       const result = await getComics(page, character);
       setComics(result.data.data.results);
       setCount(result.data.data.count);
+      setLoading(false);
     } catch (e) {
       console.log(`Request failed: ${e}`);
     }
@@ -113,42 +116,51 @@ const ListComics = () => {
           </IconButton>
         </Paper>
 
-        <Grid container className={classes.root}>
-          <Grid item xs={12}>
-            <Grid container justify="center" spacing={10}>
-              { comics.map(comic => (
-                <Grid key={comic.id.toString()} item>
-                  {
-                    <CardComic
-                      key={comic.id.toString()}
-                      info={comic}
-                    />
-                  }
+        {
+          loading
+            ? (
+              <Loading />
+            )
+            : (
+              <React.Fragment>
+                <Grid container className={classes.root}>
+                  <Grid item xs={12}>
+                    <Grid container justify="center" spacing={10}>
+                      { comics.map(comic => (
+                        <Grid key={comic.id.toString()} item>
+                          {
+                            <CardComic
+                              key={comic.id.toString()}
+                              info={comic}
+                            />
+                          }
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Grid>
                 </Grid>
-              ))}
-            </Grid>
-          </Grid>
-        </Grid>
-
-        <div className={classes.pagination}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => togglePrev()}
-            disabled={(currentPage < 2)}
-          >
-            previous
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={(count < 21)}
-            onClick={() => toggleNext()}
-            className={classes.nextBtn}
-          >
-            Next
-          </Button>
-        </div>
+                <div className={classes.pagination}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => togglePrev()}
+                    disabled={(currentPage < 2)}
+                  >
+                    previous
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={(count < 21)}
+                    onClick={() => toggleNext()}
+                    className={classes.nextBtn}
+                  >
+                    Next
+                  </Button>
+                </div>
+              </React.Fragment>
+            )
+        }
       </div>
     </React.Fragment>
   );

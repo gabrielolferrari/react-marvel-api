@@ -12,6 +12,10 @@ import ComicInfo from './comicInfo';
 const useStyles = {
   card: {
     maxWidth: 324,
+    height: 500,
+    display: 'flex',
+    flexFlow: 'row wrap',
+    alignContent: 'space-between',
   },
   media: {
     height: 216,
@@ -24,7 +28,7 @@ const CardComic = (props) => {
   const childRef = useRef();
 
   function cutText(text) {
-    const maxLength = 200;
+    const maxLength = 150;
     const trimmedString = text.substr(0, maxLength);
     return `${trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(' ')))}...`;
   }
